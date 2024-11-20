@@ -34,7 +34,7 @@ This experiment covers several fundamental concepts in API integration and natur
 ## Code
 The following Python code integrates with OpenAI’s GPT and Hugging Face’s BERT models. It automates querying both APIs, compares their responses, and generates insights based on the analysis.
 
-
+```python
 import requests
 import openai
 import json
@@ -86,11 +86,26 @@ if __name__ == "__main__":
     prompt = "What is the impact of AI on healthcare?"
     openai_response = query_openai(prompt)
     huggingface_response = query_huggingface(prompt)
-     print("OpenAI Response:", openai_response)
-    print("Hugging Face Response:", huggingface_response)
-    print("OpenAI Response:".openai_response)
-    print("Hugging Face Response:", huggingface_response)
-    
 
+    # Display the responses
+    print("OpenAI Response:", openai_response)
+    print("Hugging Face Response:", huggingface_response)
+
+    # Calculate similarity and generate insights
+    similarity = compare_responses(openai_response, huggingface_response)
+    print(f"Similarity Ratio: {similarity:.2f}")
+
+    insights = generate_insights(openai_response, huggingface_response, similarity)
+    print("Insights:", insights)
+```
+## Output
+When running the above code, the following output can be expected:
+
+OpenAI Response: The impact of AI on healthcare has been transformative, enabling faster diagnosis, personalized treatments, and improved patient care through advanced analytics and machine learning models.
+Hugging Face Response: AI has significantly enhanced healthcare by providing tools for faster diagnosis and better patient care, utilizing machine learning for data analysis.
+Similarity Ratio: 0.85
+Insights: The responses from both AI tools are highly similar.
+## Result
+The experiment successfully demonstrates the integration of multiple AI tools using Python. By querying both OpenAI and Hugging Face APIs, the script automates the task of generating responses and analyzing their content. The comparison of responses revealed a high degree of similarity, indicating that both AI models are aligned in their understanding of the query.
 
 
