@@ -34,10 +34,63 @@ This experiment covers several fundamental concepts in API integration and natur
 ## Code
 The following Python code integrates with OpenAI’s GPT and Hugging Face’s BERT models. It automates querying both APIs, compares their responses, and generates insights based on the analysis.
 
-```python
+
 import requests
 import openai
 import json
 from difflib import SequenceMatcher
 
-# API Keys (Replace with your actual API
+# API Keys (Replace with your actual API keys)
+OPENAI_API_KEY = "your_openai_api_key"
+HUGGINGFACE_API_KEY = "your_huggingface_api_key"
+
+# Initialize OpenAI API
+openai.api_key = OPENAI_API_KEY
+
+# Function to query OpenAI GPT
+def query_openai(prompt):
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        max_tokens=150
+    )
+    return response.choices[0].text.strip()
+
+# Function to query Hugging Face BERT
+def query_huggingface(prompt):
+    url = "https://api-inference.huggingface.co/models/distilbert-base-uncased"
+    headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
+    payload = {"inputs": prompt}
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code == 200:
+        result = response.json()
+        return result[0].get('generated_text', "No response available")
+    return "Error in Hugging Face API request."
+
+# Function to compare responses using similarity ratio
+def compare_responses(response1, response2):
+    similarity = SequenceMatcher(None, response1, response2).ratio()
+    return similarity
+
+# Function to generate insights based on the comparison
+def generate_insights(response1, response2, similarity):
+    if similarity > 0.8:
+        return "The responses from both AI tools are highly similar."
+    elif len(response1) > len(response2):
+        return "OpenAI provided a more detailed response."
+    else:
+        return "Hugging Face provided a more concise response."
+
+# Main Experiment Code
+if __name__ == "__main__":
+    prompt = "What is the impact of AI on healthcare?"
+    openai_response = query_openai(prompt)
+    huggingface_response = query_huggingface(prompt)
+     print("OpenAI Response:", openai_response)
+    print("Hugging Face Response:", huggingface_response)
+    print("OpenAI Response:".openai_response)
+    print("Hugging Face Response:", huggingface_response)
+    
+
+
+
